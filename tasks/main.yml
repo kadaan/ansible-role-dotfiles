@@ -1,0 +1,46 @@
+---
+- name: "{{ dotfiles_name }} : Ensure dotfiles repository is cloned locally."
+  git:
+    repo: "{{ dotfiles_repo }}"
+    dest: "{{ dotfiles_repo_local_destination }}/{{ dotfiles_name }}"
+    accept_hostkey: "{{ dotfiles_repo_accept_hostkey }}"
+  become: false
+
+- name: "{{ dotfiles_name }} : Create directories for templated files."
+  include: "createdir.yml path={{ item.path }} mode={{ item.mode }}"
+  with_filetree: "{{ dotfiles_repo_local_destination }}/{{ dotfiles_name }}/templates/"
+  when: item.state == "directory"
+
+- name: "{{ dotfiles_name }} : Template files."
+  template:
+    src: "{{ item.src }}"
+    dest: "/{{ item.path | replace('__HOME__', ansible_env.HOME) | ltrim('/') }}"
+    mode: "{{ item.mode }}"
+  with_filetree: "{{ dotfiles_repo_local_destination }}/{{ dotfiles_name }}/templates/"
+  when: item.state == "file"
+
+- name: "{{ dotfiles_name }} : Create directories for symlinked files."
+  include: "createdir.yml path={{ item.path }} mode={{ item.mode }}"
+  with_filetree: "{{ dotfiles_repo_local_destination }}/{{ dotfiles_name }}/files/"
+  when: item.state == "directory"
+
+- name: "{{ dotfiles_name }} : Create symlinks."
+  file:
+    src: "{{ item.src }}"
+    dest: "/{{ item.path | replace('__HOME__', ansible_env.HOME) | ltrim('/') }}"
+    state: link
+    force: yes
+    mode: "{{ item.mode }}"
+  with_filetree: "{{ dotfiles_repo_local_destination }}/{{ dotfiles_name }}/files/"
+  when: item.state == "file"
+
+- name: "{{ dotfiles_name }} : Check if .osx dotfile is present."
+  stat:
+    path: "{{ dotfiles_repo_local_destination }}/{{ dotfiles_name }}/.osx"
+  register: osx_file
+
+- name: "{{ dotfiles_name }} : Run .osx dotfiles."
+  shell: "{{ dotfiles_repo_local_destination }}/{{ dotfiles_name }}/.osx --no-restart"
+  changed_when: false
+  when: osx_file.stat.exists == true and dotfiles_configure_osx
+  become: true
