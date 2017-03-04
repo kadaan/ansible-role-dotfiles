@@ -17,7 +17,7 @@
     dest: "/{{ item.path | replace('__HOME__', ansible_env.HOME) | ltrim('/') }}"
     mode: "{{ item.mode }}"
   with_filetree: "{{ dotfiles_repo_local_destination }}/{{ dotfiles_name }}/templates/"
-  when: item.state == "file"
+  when: item.state == "file" and item.path|basename != ".DS_Store"
 
 - name: "{{ dotfiles_name }} : Create directories for symlinked files."
   include: "createdir.yml path={{ item.path }} mode={{ item.mode }}"
@@ -32,7 +32,7 @@
     force: yes
     mode: "{{ item.mode }}"
   with_filetree: "{{ dotfiles_repo_local_destination }}/{{ dotfiles_name }}/files/"
-  when: item.state == "file"
+  when: item.state == "file" and item.path|basename != ".DS_Store"
 
 - name: "{{ dotfiles_name }} : Check if .osx dotfile is present."
   stat:
