@@ -1,10 +1,10 @@
 ---
-- name: "{{ dotfiles_name }} : Check if directory exists."
+- name: "Check if directory exists."
   stat:
     path: "/{{ path | replace('__HOME__', ansible_env.HOME) | ltrim('/') }}"
   register: directory_item
 
-- name: "{{ dotfiles_name }} : Ensure directory is created."
+- name: "Ensure directory is created."
   file:
     path: "/{{ path | replace('__HOME__', ansible_env.HOME) | ltrim('/') }}"
     state: directory

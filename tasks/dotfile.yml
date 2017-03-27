@@ -1,0 +1,12 @@
+---
+- name: Check if dotfile is present.
+  stat:
+    path: "{{ path }}"
+  register: file
+  when: path != None
+
+- name: Run dotfile.
+  shell: "{{ path }} --no-restart"
+  changed_when: false
+  when: path != None and file.stat.exists == true
+  become: true

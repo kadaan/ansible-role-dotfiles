@@ -1,0 +1,15 @@
+---
+- name: Create directories for symlinked files.
+  include: "createdir.yml path={{ item.path }} mode={{ item.mode }}"
+  with_filetree: "{{ path }}"
+  when: path != None and item.state == "directory"
+
+- name: Create symlinks.
+  file:
+    src: "{{ item.src }}"
+    dest: "/{{ item.path | replace('__HOME__', ansible_env.HOME) | ltrim('/') }}"
+    state: link
+    force: yes
+    mode: "{{ item.mode }}"
+  with_filetree: "{{ path }}"
+  when: path != None and item.state == "file" and item.path|basename != ".DS_Store"
