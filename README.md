@@ -40,7 +40,7 @@ Configure OS X by running a .osx file, if it exists, in the root of the dotfiles
 
     - hosts: localhost
       roles:
-        - { role: kadaan.dotfiles, dotfiles_name: personal, dotfiles_repo: "https://github.com/kadaan/dotfiles.git" }
+        - { role: kadaan.dotfiles, dotfiles_execute: true }
 
 ## License
 
