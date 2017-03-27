@@ -35,7 +35,6 @@ Configure OS X by running a .osx file, if it exists, in the root of the dotfiles
 
 ## Dependencies
 
-    - [kadaan.prezto](https://galaxy.ansible.com/kadaan/prezto/)
 
 ## Example Playbook
 

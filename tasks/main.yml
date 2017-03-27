@@ -1,28 +1,21 @@
 ---
-- name: "{{ dotfiles_name }} : Ensure dotfiles repository is cloned locally."
-  git:
-    repo: "{{ dotfiles_repo }}"
-    dest: "{{ dotfiles_repo_local_destination }}/{{ dotfiles_name }}"
-    accept_hostkey: "{{ dotfiles_repo_accept_hostkey }}"
-  become: false
-
 - name: "{{ dotfiles_name }} : Create directories for templated files."
   include: "createdir.yml path={{ item.path }} mode={{ item.mode }}"
-  with_filetree: "{{ dotfiles_repo_local_destination }}/{{ dotfiles_name }}/templates/"
-  when: item.state == "directory"
+  with_filetree: "{{ dotfiles_template_path }}"
+  when: dotfiles_template_path != None and item.state == "directory"
 
 - name: "{{ dotfiles_name }} : Template files."
   template:
     src: "{{ item.src }}"
     dest: "/{{ item.path | replace('__HOME__', ansible_env.HOME) | ltrim('/') }}"
     mode: "{{ item.mode }}"
-  with_filetree: "{{ dotfiles_repo_local_destination }}/{{ dotfiles_name }}/templates/"
-  when: item.state == "file" and item.path|basename != ".DS_Store"
+  with_filetree: "{{ dotfiles_template_path }}"
+  when: dotfiles_template_path != None and item.state == "file" and item.path|basename != ".DS_Store"
 
 - name: "{{ dotfiles_name }} : Create directories for symlinked files."
   include: "createdir.yml path={{ item.path }} mode={{ item.mode }}"
-  with_filetree: "{{ dotfiles_repo_local_destination }}/{{ dotfiles_name }}/files/"
-  when: item.state == "directory"
+  with_filetree: "{{ dotfiles_file_path }}"
+  when: dotfiles_file_path != None and item.state == "directory"
 
 - name: "{{ dotfiles_name }} : Create symlinks."
   file:
@@ -31,16 +24,17 @@
     state: link
     force: yes
     mode: "{{ item.mode }}"
-  with_filetree: "{{ dotfiles_repo_local_destination }}/{{ dotfiles_name }}/files/"
-  when: item.state == "file" and item.path|basename != ".DS_Store"
+  with_filetree: "{{ dotfiles_file_path }}"
+  when: dotfiles_file_path != None and item.state == "file" and item.path|basename != ".DS_Store"
 
 - name: "{{ dotfiles_name }} : Check if .osx dotfile is present."
   stat:
-    path: "{{ dotfiles_repo_local_destination }}/{{ dotfiles_name }}/.osx"
+    path: "{{ dotfiles_osx_file }}"
   register: osx_file
+  when: dotfiles_osx_file != None
 
-- name: "{{ dotfiles_name }} : Run .osx dotfiles."
-  shell: "{{ dotfiles_repo_local_destination }}/{{ dotfiles_name }}/.osx --no-restart"
+- name: "{{ dotfiles_name }} : Run .osx dotfile."
+  shell: "{{ dotfiles_osx_file }} --no-restart"
   changed_when: false
-  when: osx_file.stat.exists == true and dotfiles_configure_osx
+  when: dotfiles_osx_file != None and osx_file.stat.exists == true
   become: true

@@ -1,4 +1,4 @@
 ---
-dotfiles_repo_local_destination: "{{ ansible_env.HOME }}/.dotfiles"
-dotfiles_repo_accept_hostkey: true
-dotfiles_configure_osx: true
+dotfiles_osx_file: null
+dotfiles_template_path: null
+dotfiles_file_path: null
