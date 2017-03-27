@@ -10,3 +10,7 @@
 - name: Process dotfiles.
   include: "dotfile.yml path={{ item }}"
   with_items: "{{ dotfiles_osx_files }}"
+
+- name: Process preferences.
+  include: "{{ item }}"
+  with_items: "{{ dotfile_preference_files }}"
