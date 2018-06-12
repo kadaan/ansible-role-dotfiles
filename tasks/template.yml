@@ -2,6 +2,7 @@
 - name: Create directories for templated files.
   include: "createdir.yml path={{ item.path }} mode={{ item.mode }}"
   with_filetree: "{{ path }}"
+  become: true
   when: path != None and item.state == "directory"
 
 - name: Template files.
@@ -9,5 +10,6 @@
     src: "{{ item.src }}"
     dest: "/{{ item.path | replace('__HOME__', ansible_env.HOME) | ltrim('/') }}"
     mode: "{{ item.mode }}"
+  become: true
   with_filetree: "{{ path }}"
   when: path != None and item.state == "file" and item.path|basename != ".DS_Store"
