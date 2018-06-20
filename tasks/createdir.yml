@@ -10,3 +10,4 @@
     state: directory
     mode: "{{ mode }}"
   when: directory_item.stat.exists == false
+  become: true
