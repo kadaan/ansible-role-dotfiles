@@ -2,4 +2,4 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - ansible-role-dotfiles2
+    - ansible-role-dotfiles
