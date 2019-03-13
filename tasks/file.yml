@@ -12,6 +12,7 @@
     state: link
     force: yes
     mode: "{{ item.mode }}"
+    owner: "{{ ansible_user if '__HOME__' in item.path else root }}"
   become: true
   with_filetree: "{{ path }}"
   when: path != None and item.state == "file" and item.path|basename != ".DS_Store"
