@@ -4,12 +4,13 @@ import unittest
 import re
 import unicodedata
 import textwrap
+import six
 
 
 def _string_sanity_check(string):
     if string is None:
         return ''
-    if not isinstance(string, basestring):
+    if not isinstance(string, six.string_types):
         return str(string)
     return string
 
