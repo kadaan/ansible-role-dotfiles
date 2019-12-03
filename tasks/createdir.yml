@@ -1,14 +1,14 @@
 ---
 - name: "Check if directory exists."
   stat:
-    path: "/{{ path | replace('__HOME__', ansible_env.HOME) | ltrim('/') }}"
+    path: "/{{ dir.path | replace('__HOME__', ansible_env.HOME) | ltrim('/') }}"
   register: directory_item
 
 - name: "Ensure directory is created."
   file:
-    path: "/{{ path | replace('__HOME__', ansible_env.HOME) | ltrim('/') }}"
+    path: "/{{ dir.path | replace('__HOME__', ansible_env.HOME) | ltrim('/') }}"
     state: directory
-    mode: "{{ mode }}"
-    owner: "{{ ansible_user if '__HOME__' in item.path else root }}"
+    mode: "{{ dir.mode }}"
+    owner: "{{ ansible_user if '__HOME__' in dir.path else root }}"
   when: directory_item.stat.exists == false
   become: true
