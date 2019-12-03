@@ -1,9 +1,13 @@
 ---
 - name: Create directories for symlinked files.
-  include: "createdir.yml path={{ item.path }} mode={{ item.mode }}"
-  with_filetree: "{{ path }}"
-  become: true
-  when: path != None and item.state == "directory"
+  include_tasks:
+    file: createdir.yml
+    apply:
+      become: true
+  vars:
+    dir: "{{ item }}"
+  when: item.state == "directory"
+  with_filetree: "{{ path if path is defined and path != None else [] }}"
 
 - name: Create symlinks.
   file:
