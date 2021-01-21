@@ -1,6 +1,6 @@
 # Ansible Role: Dotfiles
 
-[![Build Status](https://travis-ci.org/kadaan/ansible-role-dotfiles.svg?branch=master)](https://travis-ci.org/kadaan/ansible-role-dotfiles)
+[![Build Status](https://travis-ci.com/kadaan/ansible-role-dotfiles.svg?branch=master)](https://travis-ci.com/kadaan/ansible-role-dotfiles)
 
 Installs a set of dotfiles from a given Git repository.
 
