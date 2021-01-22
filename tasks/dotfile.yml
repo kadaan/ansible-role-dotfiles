@@ -8,5 +8,5 @@
 - name: Run dotfile.
   shell: "{{ path }} --no-restart"
   changed_when: false
-  when: path != None and file.stat.exists == true
+  when: path != None and file.stat.exists
   become: true
