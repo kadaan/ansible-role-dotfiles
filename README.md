@@ -1,6 +1,6 @@
 # Ansible Role: Dotfiles
 
-[![Build Status](https://travis-ci.com/kadaan/ansible-role-dotfiles.svg?branch=master)](https://travis-ci.com/kadaan/ansible-role-dotfiles)
+[![CI][badge-gh-actions]][link-gh-actions]
 
 Installs a set of dotfiles from a given Git repository.
 
@@ -45,3 +45,6 @@ Configure OS X by running a .osx file, if it exists, in the root of the dotfiles
 ## License
 
 Apache 2.0
+
+[badge-gh-actions]: https://github.com/kadaan/ansible-role-dotfiles/workflows/CI/badge.svg?event=push
+[link-gh-actions]: https://github.com/kadaan/ansible-role-dotfiles/actions?query=workflow%3ACI

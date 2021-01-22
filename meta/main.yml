@@ -1,13 +1,17 @@
+---
+dependencies: []
+
 galaxy_info:
+  role_name: dotfiles
   author: kadaan
-  description: Dotfile installation for UNIX/Linux.
+  description: Dotfile installation for UNIX/Linux
   license: Apache 2.0
-  min_ansible_version: 2.2
+  min_ansible_version: 2.5
   platforms:
     - name: MacOSX
       versions:
-        - 10.11
-        - 10.12
+        - all
+        - any
   galaxy_tags:
     - development
     - system
