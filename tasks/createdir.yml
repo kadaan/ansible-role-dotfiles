@@ -9,6 +9,6 @@
     path: "/{{ dir.path | replace('__HOME__', ansible_env.HOME) | ltrim('/') }}"
     state: directory
     mode: "{{ dir.mode }}"
-    owner: "{{ ansible_env.USER if '__HOME__' in dir.path else root }}"
+    owner: "{{ ansible_env.USER if '__HOME__' in dir.path else 'root' }}"
   when: not directory_item.stat.exists
   become: true
