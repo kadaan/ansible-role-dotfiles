@@ -10,5 +10,5 @@
     state: directory
     mode: "{{ dir.mode }}"
     owner: "{{ ansible_env.USER if '__HOME__' in dir.path else root }}"
-  when: directory_item.stat.exists == false
+  when: not directory_item.stat.exists
   become: true

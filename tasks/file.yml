@@ -14,7 +14,7 @@
     src: "{{ item.src }}"
     dest: "/{{ item.path | replace('__HOME__', ansible_env.HOME) | ltrim('/') }}"
     state: link
-    force: yes
+    force: true
     mode: "{{ item.mode }}"
     owner: "{{ ansible_env.USER if '__HOME__' in item.path else root }}"
   become: true
